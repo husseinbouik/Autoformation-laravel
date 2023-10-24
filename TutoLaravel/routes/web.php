@@ -45,16 +45,34 @@ Route::get('/', function () {
 //     ];
 // });
 
-Route::get("/blog", function () {
-    return [
-        "link" => \route('blog.show',['slug'=> 'article','id'=> '12']),
-    ];
-})->name('blog.index');
+// route::prefix('/blabla')->group(function () {
+// Route::get("/", function () {
+//     return [
+//         "link" => \route('blog.show',['slug'=> 'article','id'=> '12']),
+//     ];
+// })->name('blog.index');
 
-Route::get('/blog/{id}-{slug}', function (string $id,string $slug, Request $request) {
-    return[
-        "slug" => $slug,
-        "id"=> $id,
-        "name" => "Tanger",
-    ];
-})->name('blog.show');
+// Route::get('/{id}-{slug}', function (string $id,string $slug, Request $request) {
+//     return[
+//         "slug" => $slug,
+//         "id"=> $id,
+//         "name" => "Tanger",
+//     ];
+// })->name('blog.show');
+// });
+
+route::prefix('/blabla')->name('blabla.')->group(function () {
+    Route::get("/", function () {
+        return [
+            "link" => \route('show',['slug'=> 'article','id'=> '12']),
+        ];
+    })->name('index');
+    
+    Route::get('/{id}-{slug}', function (string $id,string $slug, Request $request) {
+        return[
+            "slug" => $slug,
+            "id"=> $id,
+            "name" => "Tanger",
+        ];
+    })->name('show');
+    });
