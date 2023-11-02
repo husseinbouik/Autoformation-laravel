@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Blogcontroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route :: prefix('/blog')->name('blog.')->group (function () {
-    Route::get('/', function (Request $request) {
+// Route :: prefix('/blog')->name('blog.')->group (function () {
+//     Route::get('/', function (Request $request) {
     // $post = new \App\Models\Post();
     // $post->title = 'le3a9l-al-moudabir';
     // $post->slug = 'blabla';
@@ -72,18 +73,19 @@ Route :: prefix('/blog')->name('blog.')->group (function () {
 // dd($post[1]->title);
 // dd($post->first());
 
-return \App\Models\Post :: paginate(25);
-    })->name('index');
-    Route::get('/{slug}-{id}', function (string $slug, string $id, Request $request) {
-        $post = \App\Models\Post :: findOrFail($id);
+// return \App\Models\Post :: paginate(25);
 
-      /* redirect  to the right url   */ 
+// Route :: prefix('/blog')->name('blog.')->group (function () {
+//   Route::get('/',[Blogcontroller::class,'index'])->name('index');
+//     Route::get('/{slug}-{id}',[Blogcontroller::class,'show'])->where ([
+//         'id' => '[0-9]+',
+//         'slug' => '[a-z0-9\-]+'
+//         ])->name('show');
+// });
 
-        // if ($post->slug != $slug) {
-        //     return to_route('blog.show', ['slug' => $post->slug, 'id' => $post->id]);
-        //     }
-        return $post;
-        })->where ([
+Route :: prefix('/blog')->name('blog.')->controller(Blogcontroller::class)->group (function () {
+Route::get('/', 'index')->name('index');
+    Route::get('/{slug}-{id}','show')->where ([
         'id' => '[0-9]+',
         'slug' => '[a-z0-9\-]+'
         ])->name('show');
