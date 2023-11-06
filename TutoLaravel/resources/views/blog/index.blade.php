@@ -12,7 +12,7 @@
 <p>
       {{$post->content}}
 </p>
-<p>
+<p> 
     <a href="{{ route('blog.show',['slug' => $post->slug , 'id'=> $post->id ]) }}"  class="btn btn-primary"> lire la suite</a>
 </p>
 
