@@ -42,6 +42,12 @@ $routeName = request()->route()->getName();
     </nav>
     <div class="container">
         @yield('content')
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{session('success')}}
+        </div>
+            
+        @endif
     </div>
 </body>
 </html>
