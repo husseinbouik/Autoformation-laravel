@@ -26,6 +26,8 @@ class FormPostRequest extends FormRequest
             'title'=>['required','min:8'],
             'slug'=>['required','min:8','regex:/^[a-z0-9\-]+$/'],
             'content'=>['required'],
+            'category_id' =>['required','exists:categories,id'],
+            'tags'=>['array','exists:tags,id','required'],
         ];
     }
     protected function prepareForValidation(){

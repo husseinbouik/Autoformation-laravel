@@ -6,6 +6,7 @@ use App\Http\Requests\BlogFilterRequest;
 use App\Http\Requests\FormPostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -17,7 +18,9 @@ class Blogcontroller extends Controller
     public function create(){
         $post = new Post();
         return view('blog.create',[
-            'post'=> $post
+            'post'=> $post,
+            'categories' => Category::select('id','name')->get(),
+            'tags' => Tag::select('id','name')->get()
         ]);
         
 
@@ -27,17 +30,21 @@ class Blogcontroller extends Controller
     //    dd($request->all());
     //    dd(session()->all());
     $post = Post::create($request->Validated());
+    $post->tags()->sync($request->validated('tags'));
     return redirect()->route('blog.show',['slug'=> $post->slug,'post'=> $post->id])->with('success',"the article has been saved successfully");
     }
     public function edit( Post $post){
         return view('blog.edit',[
-            'post'=> $post
+            'post'=> $post,
+            'categories' => Category::select('id','name')->get(),
+            'tags' => Tag::select('id','name')->get()
         ]);
     }
 
     public function update(Post $post,FormPostRequest $request){
-
+// dd($request->validated('tags'));
         $post->update($request->validated());
+        $post->tags()->sync($request->validated('tags'));
     return redirect()->route('blog.show',['slug'=> $post->slug,'post'=> $post->id])->with('success',"the article has been updated successfully");
 
     }
