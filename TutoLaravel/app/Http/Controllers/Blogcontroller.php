@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogFilterRequest;
 use App\Http\Requests\FormPostRequest;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Validator;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Blogcontroller extends Controller
 {
     public function create(){
@@ -40,7 +41,38 @@ class Blogcontroller extends Controller
     return redirect()->route('blog.show',['slug'=> $post->slug,'post'=> $post->id])->with('success',"the article has been updated successfully");
 
     }
-    public function index(): View {
+public function index(): View {
+
+
+
+// $post = Post::all();
+
+// $post = Post::has('tags','>',1)->get();
+// $post->tags()->createMany([[
+//     'name'=> 'Tag 1',
+// ],[
+//     'name'=> 'Tag 2',
+// ]]);
+// $tags = $post->tags()->where('name','Tag 1')->get();
+// $tags = $post->tags()->detach(2);  //detach id and delete the relation
+// $tags = $post->tags()->attach(2);  //attach id and  add a relation
+// $tags = $post->tags()->sync([1]); //attach or detach related models
+
+// $posts = Post::all();
+// $posts = Post::with('category')->get();
+// $category = Category::find(1);
+// $post = Post::find(1);
+// $post->category()->associate($category);
+// $post->save();
+// $category->posts()->where('id','>','10')->get();
+// dd($category->posts);
+// foreach($posts as $post){
+// $category = $post->category?->name;
+// }
+// $post->category_id = 2 ;
+// $post->save();
+// dd($post->category->name);
+
         // dd($request->Validated()); 
         // $Validator = Validator::make([
         //     'title'=> 'uiguiui',
@@ -59,11 +91,8 @@ class Blogcontroller extends Controller
         // dd($Validator->Validated()); //return the title or 'The page isn’t redirecting properly'
 
         return view("blog.index",[
-            'posts' => \App\Models\Post::paginate(2),
+            'posts' => \App\Models\Post::with('tags','category')->paginate(10),
         ]);
-
-
-
     }
     public function show(string $slug ,Post $post): RedirectResponse | View
     {

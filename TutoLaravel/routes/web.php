@@ -46,7 +46,7 @@ Route::get('/', function () {
 
 // $post = \App\Models\Post::create([
 //     'title'=> 'al 3a9l al mouodabir',
-//     'slug'=> 'boom tam tam ',
+//     'slug'=> 'blabla4',
 //     'content'=>'superfragilisticexpialidocious'
 // ]);
 
