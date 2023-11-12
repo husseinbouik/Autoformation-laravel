@@ -10,6 +10,8 @@ use App\Models\Tag;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -97,6 +99,14 @@ public function index(): View {
         // // dd($Validator->errors()); //true or return a message of validation  
         // dd($Validator->Validated()); //return the title or 'The page isn’t redirecting properly'
 
+
+        // \App\Models\User::create([
+        // "name"=> "hussein",
+        // "email"=> "husseinbouik@gmail.com",
+        // "password"=> Hash::make("0000")
+
+        // ]);
+        // dd(Auth::user());
         return view("blog.index",[
             'posts' => \App\Models\Post::with('tags','category')->paginate(10),
         ]);

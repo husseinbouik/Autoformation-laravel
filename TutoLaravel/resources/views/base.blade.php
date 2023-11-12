@@ -37,6 +37,22 @@ $routeName = request()->route()->getName();
                         <a class="nav-link" href="#">Link</a>
                     </li>
                 </ul>
+
+                <div class="navbar-nav ns-auto nb-2 nb-lg-0">
+                    @auth
+                        {{ Auth::user()->name}}
+                        <form action="{{route('auth.logout')}}" method="POST" class="nav-item">
+                        @method('delete')
+                        @csrf
+                        <button class="nav-link">Logout</button>
+                        </form>
+                    @endauth
+                    @guest
+                    <div class="nav-item">
+                        <a href="{{ route('auth.login')}}" class="nav-link">connect</a>
+                    </div>
+                    @endguest
+                </div>
             </div>
         </div>
     </nav>
