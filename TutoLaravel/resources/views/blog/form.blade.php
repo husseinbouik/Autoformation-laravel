@@ -1,6 +1,13 @@
-<form action="" method="POST" class="vstack gap-2">
+<form action="" method="POST" class="vstack gap-2" enctype="multipart/form-data">
     @csrf
     @method($post->id ? "PATCH" : "POST")
+    <div class="form-group">
+        <label for="image">image</label>
+        <input type="file" name="image" class="form-control" id="image" >
+@error('image')
+    {{$message}}
+@enderror
+    </div>
     <div class="form-group">
         <label for="title">title</label>
         <input type="text" name="title" class="form-control" value="{{old('title',$post->title)}}">

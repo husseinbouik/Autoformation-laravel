@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Validator;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -31,7 +32,8 @@ class Blogcontroller extends Controller
     public function store(FormPostRequest $request){
     //    dd($request->all());
     //    dd(session()->all());
-    $post = Post::create($request->Validated());
+
+    $post = Post::create($this->extractData( new Post() ,$request ));
     $post->tags()->sync($request->validated('tags'));
     return redirect()->route('blog.show',['slug'=> $post->slug,'post'=> $post->id])->with('success',"the article has been saved successfully");
     }
@@ -45,11 +47,28 @@ class Blogcontroller extends Controller
 
     public function update(Post $post,FormPostRequest $request){
 // dd($request->validated('tags'));
-        $post->update($request->validated());
+
+// dd($imagePath);
+        $post->update($this->extractData( $post ,$request ));
         $post->tags()->sync($request->validated('tags'));
     return redirect()->route('blog.show',['slug'=> $post->slug,'post'=> $post->id])->with('success',"the article has been updated successfully");
 
     }
+private function extractData (Post $post,FormPostRequest $request):array { 
+    $data =$request->validated();
+    // dd($data);
+// /** @var UploadedFile|null $image */    
+    $image = $request->validated('image');
+    if($image == null || $image->getError()){
+return $data;
+    }
+    if($post->image){
+        Storage::disk('public')->delete($post->image);
+    }
+
+    $data['image'] = $image->store('blog','public');
+    return $data;
+}
 public function index(): View {
 
 
