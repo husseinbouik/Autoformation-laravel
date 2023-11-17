@@ -84,6 +84,11 @@ Route::get('/', function () {
 // });
 
 Route :: prefix('/blog')->name('blog.')->controller(Blogcontroller::class)->group (function () {
+      $post = new \App\Models\Post();
+    $post->title = 'blog1';
+    $post->slug = 'blabla1';
+    $post->content = 'Superfragilisticexpialidocious1';
+    $post->save();
 Route::get('/', 'index')->name('index');
     Route::get('/{slug}-{id}','show')->where ([
         'id' => '[0-9]+',
