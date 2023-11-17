@@ -2,15 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogFilterRequest;
 use App\Models\Post;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class Blogcontroller extends Controller
 {
-    public function index(): View {
+    public function index(BlogFilterRequest $request ): View {
+
+        dd($request->validated());
+        // $validator = Validator::make(
+        //     [
+        //         'title'=> 'jugiufgufgeiugfe',
+        //     ],[
+        //         'title'=> 'required|min:8',
+
+        //     ]
+        
+        //     );
+            // dd($validator->errors());
+            // dd($validator->validated());
+
         return view("blog.index",[
             'posts' => \App\Models\Post::paginate(2),
 
